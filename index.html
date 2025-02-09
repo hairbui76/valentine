@@ -20,12 +20,12 @@
 
     .container {
       background: white;
-      padding: 60px;
+      padding: 40px;
       border-radius: 30px;
       text-align: center;
       box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-      width: 80vw;
-      height: 80vh;
+      width: 50vw;
+      height: 50vh;
       position: relative;
       color: #ff69b4;
       display: flex;
@@ -37,16 +37,16 @@
     .button-container {
       display: flex;
       justify-content: center;
-      gap: 50px;
+      gap: 30px;
       margin-top: 20px;
     }
 
     button {
-      padding: 16px 32px;
+      padding: 12px 24px;
       border: none;
       border-radius: 20px;
       cursor: pointer;
-      font-size: 22px;
+      font-size: 18px;
       font-family: 'Patrick Hand', cursive;
       transition: all 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -69,12 +69,25 @@
       color: white;
       transition: top 0.2s, left 0.2s;
     }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 70vw;
+        height: 60vh;
+        padding: 30px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
+    }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1 style="font-size: 3rem;">Đi chơi Valentine nhé?</h1>
+    <h1 style="font-size: 2.5rem;">Đi chơi Valentine nhé?</h1>
     <div class="button-container">
       <button class="yes" onclick="alert('Yay! Hẹn hò thôi! 💖')">Có</button>
       <button class="no" id="noBtn">Không</button>
@@ -84,23 +97,31 @@
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.querySelector('.yes');
 
-    noBtn.addEventListener('mouseenter', () => {
-      let randomTop, randomLeft;
-      const container = document.querySelector('.container');
-      const maxWidth = container.clientWidth - noBtn.clientWidth;
-      const maxHeight = container.clientHeight - noBtn.clientHeight;
+    function moveNoButton() {
+      requestAnimationFrame(() => {
+        let randomTop, randomLeft;
+        const container = document.querySelector('.container');
+        const maxWidth = container.clientWidth - noBtn.clientWidth;
+        const maxHeight = container.clientHeight - noBtn.clientHeight;
 
-      do {
-        randomTop = Math.random() * maxHeight;
-        randomLeft = Math.random() * maxWidth;
-      } while (
-        Math.abs(randomLeft - yesBtn.offsetLeft) < 100 &&
-        Math.abs(randomTop - yesBtn.offsetTop) < 50
-      );
+        do {
+          randomTop = Math.random() * maxHeight;
+          randomLeft = Math.random() * maxWidth;
+        } while (
+          Math.abs(randomLeft - yesBtn.offsetLeft) < 100 &&
+          Math.abs(randomTop - yesBtn.offsetTop) < 50
+        );
 
-      noBtn.style.position = "absolute";
-      noBtn.style.top = `${randomTop}px`;
-      noBtn.style.left = `${randomLeft}px`;
+        noBtn.style.position = "absolute";
+        noBtn.style.top = `${randomTop}px`;
+        noBtn.style.left = `${randomLeft}px`;
+      });
+    }
+
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Ngăn chặn hành vi mặc định để tránh bị "đứng im"
+      moveNoButton();
     });
   </script>
 </body>
